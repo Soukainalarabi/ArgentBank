@@ -13,6 +13,7 @@ export default function Profile() {
     firstName: "",
     lastName: "",
   });
+  const [updatedFullName, setUpdatedFullName] = useState(null); 
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -57,15 +58,18 @@ function signOut(){
 }
   function handleClickSave() {
     axios
-      .put("http://localhost:3001/api/v1/user/profile", fullName, {
+      .put("http://localhost:3001/api/v1/user/profile",fullName, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       .then((res) => {
-        setFullName({
-          firstName: res.data.body.firstName,
-          lastName: res.data.body.lastName,
+        const updatedData = res.data.body;
+
+        setUpdatedFullName({
+          firstName: updatedData.firstName,
+          lastName: updatedData.lastName,
         });
         setEditing(true);
+       
       })
       .catch((error) => {
         console.log(error.response.data.message);
@@ -84,10 +88,10 @@ function signOut(){
       <h1 className="sr-only">Argent Bank</h1>
     </Link>
     <div className="navigate-profile">
-           <Link to="./user.html" className="main-nav-item">
+           <div className="main-nav-item">
              <i className="fa fa-user-circle"></i>
-             Tony
-           </Link>
+             {fullName.firstName} 
+           </div>
            <Link to="/login" className="main-nav-item" onClick={signOut}>
              <i className="fa fa-sign-out"></i>
              Sign Out
@@ -102,14 +106,20 @@ function signOut(){
             <div className="header">  
                       <h1>Welcome back</h1>
              <div className="inputEdit">
-                <input type="firstName" id="firstName"placeholder={fullName.firstName} />
-                <input type="lastName" id="lastName" placeholder={fullName.lastName} />
+             <input type="text" id="firstName" placeholder={fullName.firstName} onChange={(e) => setFullName({ ...fullName, firstName: e.target.value })} />
+              <input type="text" id="lastName" placeholder={fullName.lastName} onChange={(e) => setFullName({ ...fullName, lastName: e.target.value })} />
                </div>
                  <div className="buttons">
                         <button className="button-save" onClick={handleClickSave}>Save</button>
                        <button className="button-cancel" onClick={handleClickCancel}>Cancel</button>
              </div>
              </div>
+        )}
+          {updatedFullName && (
+            <div className="header-edit">
+            <h1>Welcome back<br />{updatedFullName.firstName} {updatedFullName.lastName} !</h1>
+            <button className="edit-button update" onClick={handleClickEdit}>Edit Name</button>
+         </div>
         )}
         <h2 className="sr-only">Accounts</h2>
         <section className="account">

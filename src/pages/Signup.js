@@ -33,13 +33,14 @@ export default function SignUp() {
         email: login.email,
         password:login.password})
         .then((res) => {
-            if (res.data.body.token) {
-              navigate("/login");
-            } else {
-              // Gérer le cas où la création du compte échoue ici
-              navigate("/signup");
+            navigate("/login")
+            // if (res.data.body.token) {
+            //   navigate("/login");
+            // } else {
+            //   // Gérer le cas où la création du compte échoue ici
+            //   navigate("/signup");
 
-            }
+            // }
           })
       .catch((erreur)=>{
  console.log(erreur.response.data.message)

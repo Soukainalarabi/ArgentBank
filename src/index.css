@@ -50,6 +50,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
   padding: 5px 20px;
 }
 
@@ -67,6 +68,11 @@ body {
   margin-right: 0.5rem;
 }
 /* style button deco */
+.navigate-profile{
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .navigate-profile button {
   cursor: pointer;
   font-weight: bold;
@@ -328,4 +334,33 @@ body {
 }
 .catch-message{
   color:red;
+}
+.header-edit{
+  display: none;
+}
+@media(max-width:770px){
+  .bg-dark {
+    height: auto;
+}
+}
+@media(max-width:370px){
+  .main-nav a {
+   
+    font-size: 12px;
+}
+
+.main-nav {
+  padding: 5px 2px;
+}
+}
+@media (max-width:315px){
+  .main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+#firstName,#lastName{
+  width: 63px
+}
 }
