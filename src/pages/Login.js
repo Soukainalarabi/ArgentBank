@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import api from "../api";
 export default function Login() {
-    const navigate = useNavigate()
-
+  const navigate = useNavigate()
   const [errorMessage,setErrorMessage]=useState("")
   const [login, setLogin] = useState({
     email: "", password:""
   });
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+         
   const handleChange = (e) => {
     e.preventDefault();
     const {name,value}=e.target
@@ -19,24 +21,26 @@ export default function Login() {
   };
   const submitForm = (e) => {
     e.preventDefault();
-    // if(!login.email || !login.password){
-    //   console.log("veuillez saisir votre email et mot de passe")
-    //   return
-    // }
-        axios.post("http://localhost:3001/api/v1/user/login", { email: login.email,password:login.password}
-      )
-
-      .then((res) => {
-         console.log("Email saisi :", login.email);
-      console.log("Mot de passe saisi :", login.password);
-      navigate("/profile");
-      })
-      .catch((error) => {
-setErrorMessage(error.response.data.message)    
-navigate("/signup");
-return 
- });     
-
+    if (login.email && login.password) {
+      axios
+        .post("http://localhost:3001/api/v1/user/login", {
+          email: login.email,
+          password: login.password
+        })
+        .then((response) => {
+          const token = response.data.body.token;
+  
+          if (token) {
+            localStorage.setItem("token", token);
+            navigate("/profile");
+          }
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data.message);
+        });
+    }else{
+      console.log("Veuillez remplire le formulaire pour se connecter")
+    }
   };
 return (
 <main className="main bg-dark">
@@ -46,17 +50,22 @@ return (
 <form onSubmit={submitForm}>
     <div className="input-wrapper">
       <label>Username</label>
-      <input type="email" id="username" name="email" onChange={handleChange} />
+      <input type="email" id="username" name="email" autoComplete="current-email" onChange={handleChange} />
     </div>
     <div className="input-wrapper">
       <label>Password</label>
-        <input type="password" id="password" name="password" onChange={handleChange} />
+        <input type="password" id="password" name="password" autoComplete="current-password" onChange={handleChange} />
+
     </div>
     <div className="input-remember">
       <input type="checkbox" id="remember-me" />
       <label>Remember me</label>
     </div>
-    <p className="catch-message">{errorMessage}</p>
+    {/* {!login.email || !login.password ?(
+          <p className="catch-message">Veuillez remplire le formulaire pour se connecter</p>
+    ):null} */}
+    {errorMessage && <p className="catch-message">{errorMessage}</p>}
+
     <button type="submit" className="sign-in-button">Sign In</button>
   
   </form>

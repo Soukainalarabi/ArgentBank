@@ -32,11 +32,17 @@ export default function SignUp() {
         lastName: login.lastName,
         email: login.email,
         password:login.password})
-      .then((res) => {
-       navigate("/login");
-      })
+        .then((res) => {
+            if (res.data.body.token) {
+              navigate("/login");
+            } else {
+              // Gérer le cas où la création du compte échoue ici
+              navigate("/signup");
+
+            }
+          })
       .catch((erreur)=>{
-console.log(erreur.response.data.message)
+ console.log(erreur.response.data.message)
 setErrorMessage(erreur.response.data.message)
       })
   };

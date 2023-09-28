@@ -7,13 +7,10 @@ import { Link } from "react-router-dom";
 
 export default function Navigation(){
     const location=useLocation()
-    // const dispatch=useDispatch()
-    // const handleClickDeco = () => {
-    //   dispatch(deconnected())  
-    //   location.pathname==='/'
-    // } 
+  
     return(
-    <nav className="main-nav">
+        <>
+        {location.pathname==='/login' ||location.pathname==='/'||location.pathname==='/signup' ? (<nav className="main-nav">
     <Link to="/" className="main-nav-logo" >
       <img
         className="main-nav-logo-image"
@@ -22,26 +19,15 @@ export default function Navigation(){
       />
       <h1 className="sr-only">Argent Bank</h1>
     </Link>
-   {location.pathname==='/profile'?(
-           <div className="navigate-profile">
-           <Link to="./user.html" className="main-nav-item">
-             <i className="fa fa-user-circle"></i>
-             Tony
-           </Link>
-           <Link to="/" className="main-nav-item">
-             <i className="fa fa-sign-out"></i>
-             Sign Out
-           </Link>
-         </div>
-   ):(
         <div className="navigate-home">
         <Link to="/login" className="main-nav-item">
           <i className="fa fa-user-circle"></i>
           Sign In
         </Link>
       </div>
-    )}
    
   </nav>
+  ):null}
+  </>
   );
 }
