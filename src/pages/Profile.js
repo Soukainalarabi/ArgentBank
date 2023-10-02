@@ -1,75 +1,49 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/argentBankLogo.png"
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { profile } from "../actions/profile";
+import { putProfile } from "../actions/profilePut";
+import { logout } from "../actions/logout";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const firstNameInput = useRef();
+  const lastNameInput = useRef();
+
+  const login = useSelector((state)=>state.loginReducer)
+  const profileState = useSelector((state)=>state.profileReducer)
+
+  const dispatch = useDispatch();
+
   // eslint-disable-next-line
-  const[connected,setConnected]=useState(false)
-  const [editing, setEditing] = useState(true);
-  const [fullName, setFullName] = useState({
-    firstName: "",
-    lastName: "",
-  });
-  const [updatedFullName, setUpdatedFullName] = useState(null); 
-  const token = localStorage.getItem("token");
+  const [editing, setEditing] = useState(false);
+
 
   useEffect(() => {
     // Vérifiez d'abord si le token est valide
-    if (!token) {
+    if (!login.token) {
       navigate("/login");
-      setConnected(false)
       return; 
     }
-
-    axios
-      .post("http://localhost:3001/api/v1/user/profile", {}, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then((res) => {
-        const userData = res.data.body;
-
-        // Vérifiez si les données du profil sont présentes et non vides
-        if (userData && userData.firstName !== null && userData.lastName !== null) {
-          setFullName({
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
-  }, [token, navigate]);
+   dispatch(profile(login.token))
+  }, [login.token,dispatch, navigate]);
 
   function handleClickEdit() {
-    setEditing(false);
+    setEditing(true);
   }
 
   function handleClickCancel() {
-    setEditing(true);
+    setEditing(false);
   }
 function signOut(){
-  setConnected(false)
-  localStorage.removeItem("token");
-
+dispatch(logout())
 }
   function handleClickSave() {
-    axios
-      .put("http://localhost:3001/api/v1/user/profile",fullName, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      .then((res) => {
-        const updatedData = res.data.body;
-
-        setUpdatedFullName({
-          firstName: updatedData.firstName,
-          lastName: updatedData.lastName,
-        });
-        setEditing(true);
-       
+   dispatch(putProfile({firstName:firstNameInput.current.value,lastName: lastNameInput.current.value},login.token))
+      .then(() => {
+        setEditing(false);
       })
       .catch((error) => {
         console.log(error.response.data.message);
@@ -90,7 +64,7 @@ function signOut(){
     <div className="navigate-profile">
            <div className="main-nav-item">
              <i className="fa fa-user-circle"></i>
-             {fullName.firstName} 
+             {profileState.firstName} 
            </div>
            <Link to="/login" className="main-nav-item" onClick={signOut}>
              <i className="fa fa-sign-out"></i>
@@ -99,15 +73,15 @@ function signOut(){
     </div>
     </nav>
     <main className="main bg-dark">
-     {editing?(  <div className="header">
-          <h1>Welcome back<br />{fullName.firstName}  {fullName.lastName} !</h1>
+     {!editing?(  <div className="header">
+          <h1>Welcome back<br />{profileState.firstName}  {profileState.lastName} !</h1>
           <button className="edit-button" onClick={handleClickEdit}>Edit Name</button>
         </div>):(
             <div className="header">  
                       <h1>Welcome back</h1>
              <div className="inputEdit">
-             <input type="text" id="firstName" placeholder={fullName.firstName} onChange={(e) => setFullName({ ...fullName, firstName: e.target.value })} />
-              <input type="text" id="lastName" placeholder={fullName.lastName} onChange={(e) => setFullName({ ...fullName, lastName: e.target.value })} />
+             <input ref={firstNameInput} type="text" id="firstName" placeholder={profileState.firstName} defaultValue={profileState.firstName} />
+              <input ref={lastNameInput} type="text" id="lastName" placeholder={profileState.lastName}  defaultValue={profileState.lastName} />
                </div>
                  <div className="buttons">
                         <button className="button-save" onClick={handleClickSave}>Save</button>
@@ -115,12 +89,12 @@ function signOut(){
              </div>
              </div>
         )}
-          {updatedFullName && (
+          {/* {updatedFullName && (
             <div className="header-edit">
             <h1>Welcome back<br />{updatedFullName.firstName} {updatedFullName.lastName} !</h1>
             <button className="edit-button update" onClick={handleClickEdit}>Edit Name</button>
          </div>
-        )}
+        )} */}
         <h2 className="sr-only">Accounts</h2>
         <section className="account">
           <div className="account-content-wrapper">

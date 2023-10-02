@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-// import api from "../api";
+import { useDispatch } from "react-redux";
+import { postLogin } from "../actions/login";
 export default function Login() {
   const navigate = useNavigate()
+  const dispatch = useDispatch();
   const [errorMessage,setErrorMessage]=useState("")
   const [login, setLogin] = useState({
     email: "", password:""
   });
-    
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
          
   const handleChange = (e) => {
@@ -22,21 +23,15 @@ export default function Login() {
   const submitForm = (e) => {
     e.preventDefault();
     if (login.email && login.password) {
-      axios
-        .post("http://localhost:3001/api/v1/user/login", {
-          email: login.email,
-          password: login.password
-        })
+      dispatch(postLogin(login))
         .then((response) => {
           const token = response.data.body.token;
-  
-          if (token) {
-            localStorage.setItem("token", token);
+            if (token) {
             navigate("/profile");
           }
         })
         .catch((error) => {
-          setErrorMessage(error.response.data.message);
+          setErrorMessage(error?.response?.data?.message);
         });
     }else{
       console.log("Veuillez remplire le formulaire pour se connecter")
