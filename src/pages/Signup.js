@@ -1,28 +1,28 @@
-import React, { useRef,useState } from "react";
+import React, { useRef} from "react";
 import { useDispatch, useSelector  } from "react-redux";
-import { postSignup } from "../actions/signup";
+// import { postSignup } from "../actions/signup";
 export default function Signup() {
      const dispatch = useDispatch();
      const firstNameInput = useRef();
      const lastNameInput = useRef();
      const emailInput = useRef();
      const passwordInput = useRef();
-     const [errorMessage, setErrorMessage] = useState("");
+    //  const [errorMessage, setErrorMessage] = useState("");
 
-  const signupState = useSelector((state)=>state.signupReducer)
+  const signupState = useSelector((state)=>state.signup.formInfo)
+  const error = useSelector((state) => state.signup.error);
   const submitForm = (e) => {
      e.preventDefault();
     if(!emailInput.current.value || !passwordInput.current.value || !lastNameInput.current.value||!firstNameInput.current.value){
      console.log("veuillez remplire le formulaire")
       return
      }
-    dispatch(postSignup({firstName:firstNameInput.current.value,lastName: lastNameInput.current.value,email:emailInput.current.value,password:passwordInput.current.value}))
+    dispatch(signupState({firstName:firstNameInput.current.value,lastName: lastNameInput.current.value,email:emailInput.current.value,password:passwordInput.current.value}))
     .then(() => {
       // navigate("/login")
     })
     .catch((error) => {
-      setErrorMessage(error?.response?.data?.message);    
-    console.log( setErrorMessage(error?.response?.data?.message))});
+    console.log({error})});
   };
 return (
 <main className="main bg-dark">
@@ -47,7 +47,7 @@ return (
         <input ref={passwordInput}  type="password" id="password" name="password" autoComplete="current-password" defaultValue={signupState.password}/>
 
     </div>
-    {errorMessage && <p className="catch-message">{errorMessage}</p>}
+    {error && <p className="catch-message">{error}</p>}
     <button className="sign-in-button">Sign Up</button>
   
   </form>
