@@ -17,19 +17,19 @@ body {
   flex: 1;
 }
 .erreur-img{
-  width: 500px;
-  margin-top: 130px;
+  width: 481px;
+  margin-top: 200px;
   height: 300px;
 }
 .erreur{
-  height: 760px;
+  /* height: 760px; */
   background-color: #12002b;
 }
 .bg-dark {
   background-color: #12002b;
   padding-top: 20px;
     padding-bottom: 25px;
-    height: 760px;
+    /* height: 760px; */
 }
 
 .sr-only {
@@ -299,14 +299,21 @@ body {
 
 .transaction-button {
   display: block;
-  width: 100%;
+  /* width: 151px;
   padding: 8px;
-  font-size: 1.1rem;
+  font-size: 1.1rem; */
   font-weight: bold;
   margin-top: 1rem;
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
+      width: 200px;
+      font-size: 1.1rem;
+      padding: 9px;
+    /* font-size: 15px;   */
+}
+.account {
+  flex-direction: row;
 }
 .account-light button{
  
@@ -314,19 +321,7 @@ body {
   background-color: #6458f6;
 
 }
-@media (min-width: 720px) {
-  .account {
-    flex-direction: row;
-  }
 
-  .account-content-wrapper.cta {
-    flex: 0;
-  }
-
-  .transaction-button {
-    width: 200px;
-  }
-}
 /* modifications */
 .header-editing{
   color: black;
@@ -351,7 +346,7 @@ body {
   border-color: silver;
 }
 
-#firstName , #lastName{
+.inputEdit #firstName ,.inputEdit #lastName{
   height: 30px;
   color: silver;
   border: 2px solid silver;
@@ -359,10 +354,10 @@ body {
   padding-left: 9px;
   font-weight: 700;
 }
-#lastName{
+.inputEdit #lastName{
   margin-left: 2px;
 }
-#firstName{
+.inputEdit #firstName{
   margin-right:10px;
 }
 .button-cancel{
@@ -376,11 +371,74 @@ body {
 }
 .bg-light{
   background-color:#e0e6ed ;
-  height: 811px;
+  height: 900px;
 }
-@media(max-width:770px){
-  .bg-dark {
-    height: auto;
+@media (min-width: 1024px) {
+  main ,  .bg-dark {
+   height: 900px;
+  }
+  .erreur {
+    height: 1000px;
+   }
+}
+@media(max-width:1023px){
+  .bg-dark ,.erreur{
+    height: 1000px;}
+
+}
+@media (max-width:768px){
+  .account, .account-light {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    width: 60%;
+    margin: 0 auto;
+    flex-direction: column!important;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+.account-amount {
+  font-size: 2rem;
+
+}
+.bg-light {
+  height: 1000px;}
+}
+ @media (min-width: 720px) {
+  /* .account {
+    flex-direction: column;  } */
+
+  .account-content-wrapper.cta {
+    flex: 0;
+  }
+
+  .transaction-button {
+    
+    font-size: 20px;
+  }
+} 
+@media (max-width:481px){
+  .transaction-button {
+    
+    width: 160px!important;
+    font-size: 16px;  }
+    .main-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      padding: 5px 20px;
+  }
+  .inputEdit #firstName, .inputEdit #lastName{
+    width: 95px
+  }
+  .erreur-img {
+    width: 300px;
+    margin-top: 130px;
+    height: 300px;
 }
 }
 @media(max-width:370px){
@@ -392,6 +450,16 @@ body {
 .main-nav {
   padding: 5px 2px;
 }
+.account-amount {
+  font-size: 25px;
+}
+.transaction-button {
+    width: 100%;
+    padding: 5px;
+    font-size: 19px;     
+}
+.sign-in-content {
+  width: 200px;}
 }
 @media (max-width:315px){
   .main-nav {
@@ -400,7 +468,21 @@ body {
     align-items: center;
     flex-direction: column;
 }
-#firstName,#lastName{
+ /* #firstName,#lastName{
   width: 63px
+}  */
+
+.account, .account-light {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    width: 60%;
+    margin: 0 auto;
+    flex-direction: column!important;
+    padding: 1.5rem 11px;
+    box-sizing: border-box;
+    text-align: left;
+    margin-bottom: 2rem;
 }
 }

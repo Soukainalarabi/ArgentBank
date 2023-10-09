@@ -1,10 +1,11 @@
-import iconChat from "../assets/icon-chat.png"
-import iconMoney from"../assets/icon-money.png"
-import iconSecurity from"../assets/icon-security.png"
-export default function Home(){
-    return(
-        <>
-        <main>
+import React from 'react';
+import iconChat from '../assets/icon-chat.png';
+import iconMoney from '../assets/icon-money.png';
+import iconSecurity from '../assets/icon-security.png';
+
+export default function Home() {
+  return (
+    <main>
       <div className="hero">
         <section className="hero-content">
           <h2 className="sr-only">Promoted Content</h2>
@@ -49,7 +50,5 @@ export default function Home(){
         </div>
       </section>
     </main>
-
-        </>
-    );
+  );
 }

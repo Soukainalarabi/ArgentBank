@@ -1,14 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
-  firstName: "",
-  lastName: "",
+  firstName: '',
+  lastName: '',
   error: null,
 };
 
 const profileSlice = createSlice({
-  name: "profile",
+  name: 'profile',
   initialState,
   reducers: {
     fetchDataSuccess: (state, action) => {
@@ -27,7 +27,7 @@ export const { fetchDataSuccess, fetchDataError } = profileSlice.actions;
 export const profile = (token) => {
   return (dispatch) => {
     axios
-      .post("http://localhost:3001/api/v1/user/profile",{}, {
+      .post('http://localhost:3001/api/v1/user/profile', {}, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -42,7 +42,7 @@ export const profile = (token) => {
 export const putProfile = (updatedData, token) => {
   return (dispatch) => {
     axios
-      .put("http://localhost:3001/api/v1/user/profile", updatedData, {
+      .put('http://localhost:3001/api/v1/user/profile', updatedData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

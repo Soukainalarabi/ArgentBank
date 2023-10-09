@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { postLogin } from "../reducers/login.reducer"; // Importez l'action postLogin
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { postLogin } from '../reducers/login.reducer'; // Importez l'action postLogin
 
 export default function Login() {
   const navigate = useNavigate();
@@ -9,8 +9,8 @@ export default function Login() {
   const error = useSelector((state) => state.login.error);
 
   const [login, setLogin] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleChange = (e) => {
@@ -24,18 +24,19 @@ export default function Login() {
   const submitForm = async (e) => {
     e.preventDefault();
     if (login.email && login.password) {
-       dispatch(postLogin(login)); // Utilisez l'action postLogin pour effectuer la requête de connexion
-        navigate("/profile");
-      
-    } else {
-      console.log("Veuillez remplir le formulaire pour vous connecter");
+      dispatch(postLogin(login))
+        .then((res) => {
+          navigate('/profile');
+          console.log(res);
+        })
+        .catch((error));
     }
   };
 
   return (
     <main className="main bg-dark">
       <section className="sign-in-content">
-        <i className="fa fa-user-circle sign-in-icon"></i>
+        <i className="fa fa-user-circle sign-in-icon" />
         <h1>Sign In</h1>
         <form onSubmit={submitForm}>
           <div className="input-wrapper">
@@ -44,6 +45,7 @@ export default function Login() {
               type="email"
               id="username"
               name="email"
+              defaultValue={login.email}
               autoComplete="current-email"
               onChange={handleChange}
             />
@@ -54,6 +56,7 @@ export default function Login() {
               type="password"
               id="password"
               name="password"
+              defaultValue={login.password}
               autoComplete="current-password"
               onChange={handleChange}
             />
