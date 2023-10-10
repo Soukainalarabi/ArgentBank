@@ -32,6 +32,8 @@ export const postLogin = (connectedUser) => {
         dispatch(fetchDataSuccess(token));
         return Promise.resolve(res);
       }
+      console.log("le token n'existe pas");
+      return Promise.resolve(res); // Ajoutez un retour ici
     })
     .catch((error) => {
       dispatch(fetchDataError(error.response.data.message));

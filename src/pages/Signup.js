@@ -11,7 +11,7 @@ export default function Signup() {
   const emailInput = useRef();
   const passwordInput = useRef();
 
-  const error = useSelector((state) => state.signup.error);
+  const errorFromRedux = useSelector((state) => state.signup.error);
   const submitForm = (e) => {
     e.preventDefault();
     if (!emailInput.current.value || !passwordInput.current.value
@@ -30,7 +30,7 @@ export default function Signup() {
         console.log(res);
       })
       .catch((error) => {
-        console.log({ error });
+        console.log(error);
       });
   };
   return (
@@ -63,7 +63,7 @@ export default function Signup() {
             <label htmlFor="password">Password</label>
             <input ref={passwordInput} type="password" id="password" name="password" autoComplete="current-password" defaultValue={postSignup.password} />
           </div>
-          {error && <p className="catch-message">{error}</p>}
+          {errorFromRedux && <p className="catch-message">{errorFromRedux}</p>}
           <button type="button" className="sign-in-button">Sign Up</button>
 
         </form>

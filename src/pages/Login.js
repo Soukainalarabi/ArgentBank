@@ -6,7 +6,7 @@ import { postLogin } from '../reducers/login.reducer'; // Importez l'action post
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.login.error);
+  const errorFromRedux = useSelector((state) => state.login.error);
 
   const [login, setLogin] = useState({
     email: '',
@@ -29,7 +29,9 @@ export default function Login() {
           navigate('/profile');
           console.log(res);
         })
-        .catch((error));
+        .catch((error) => {
+          console.error(error); // Afficher l'erreur dans la console pour le débogage
+        });
     }
   };
 
@@ -40,23 +42,23 @@ export default function Login() {
         <h1>Sign In</h1>
         <form onSubmit={submitForm}>
           <div className="input-wrapper">
-            <label>Username</label>
+            <label htmlFor="username">Username</label>
             <input
               type="email"
               id="username"
               name="email"
-              defaultValue={login.email}
+              value={login.email}
               autoComplete="current-email"
               onChange={handleChange}
             />
           </div>
           <div className="input-wrapper">
-            <label>Password</label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
               name="password"
-              defaultValue={login.password}
+              value={login.password}
               autoComplete="current-password"
               onChange={handleChange}
             />
@@ -65,7 +67,7 @@ export default function Login() {
             <input type="checkbox" id="remember-me" />
             <label>Remember me</label>
           </div>
-          {error && <p className="catch-message">{error}</p>}
+          {errorFromRedux && <p className="catch-message">{errorFromRedux}</p>}
           <button type="submit" className="sign-in-button">
             Sign In
           </button>
