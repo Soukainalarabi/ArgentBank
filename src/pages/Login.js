@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { postLogin } from '../reducers/login.reducer'; // Importez l'action postLogin
+import { postLogin } from '../reducers/login.reducer';
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loginState = useSelector((state) => state.login);
   const errorFromRedux = useSelector((state) => state.login.error);
-
   const [login, setLogin] = useState({
     email: '',
     password: '',
   });
+  useEffect(() => {
+    if (loginState.token) {
+      navigate('/');
+    }
+  }, [loginState.token, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +35,7 @@ export default function Login() {
           console.log(res);
         })
         .catch((error) => {
-          console.error(error); // Afficher l'erreur dans la console pour le débogage
+          console.error(error);
         });
     }
   };

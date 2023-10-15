@@ -1,5 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, Routes,
+} from 'react-router-dom'; // Importer Navigate
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -19,7 +21,6 @@ export default function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Erreur />} />
-
         </Routes>
         <Footer />
       </Router>

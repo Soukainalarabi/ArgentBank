@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import logo from '../assets/argentBankLogo.png';
-
-import { logoutDone } from '../reducers/logout.reducer';
 
 import {
   profile,
@@ -17,8 +14,6 @@ export default function Profile() {
   const loginState = useSelector((state) => state.login);
   const profileState = useSelector((state) => state.profile);
   const dispatch = useDispatch();
-
-  // eslint-disable-next-line
   const [editing, setEditing] = useState(false);
   useEffect(() => {
     if (!loginState.token) {
@@ -35,9 +30,7 @@ export default function Profile() {
   function handleClickCancel() {
     setEditing(false);
   }
-  function signOut() {
-    dispatch(logoutDone());
-  }
+
   function handleClickSave() {
     const updatedData = {
       firstName: firstNameInput.current.value,
@@ -49,26 +42,7 @@ export default function Profile() {
 
   return (
     <>
-      <nav className="main-nav">
-        <Link to="/" className="main-nav-logo">
-          <img
-            className="main-nav-logo-image"
-            src={logo}
-            alt="Argent Bank Logo"
-          />
-          <h1 className="sr-only">Argent Bank</h1>
-        </Link>
-        <div className="navigate-profile">
-          <div className="main-nav-item">
-            <i className="fa fa-user-circle" />
-            {profileState.firstName}
-          </div>
-          <Link to="/login" className="main-nav-item" onClick={{ signOut }}>
-            <i className="fa fa-sign-out" />
-            Sign Out
-          </Link>
-        </div>
-      </nav>
+      <nav />
       {!editing ? (
         <main className="main bg-dark">
           <div className="header">

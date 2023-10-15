@@ -14,7 +14,7 @@ const profileSlice = createSlice({
     fetchDataSuccess: (state, action) => {
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
-      state.error = null; // Réinitialisez l'erreur en cas de succès
+      state.error = null;
     },
     fetchDataError: (state, action) => {
       state.error = action.payload;

@@ -9,9 +9,10 @@ const logoutSlice = createSlice({
   name: 'logout',
   initialState,
   reducers: {
-    logoutDone: (state, action) => {
-      state.token = action.payload;
+    logoutDone: (state) => {
+      state.token = null; // mise à jour du state avec null
       localStorage.removeItem('token');
+      return localStorage.removeItem('token');
     },
     logoutError: (state, action) => {
       state.error = action.payload;
@@ -20,9 +21,3 @@ const logoutSlice = createSlice({
 });
 export const { logoutDone, logoutError } = logoutSlice.actions;
 export default logoutSlice.reducer;
-// export const logout = () => {
-//     return (dispatch) => {
-//       localStorage.removeItem("token");
-//         dispatch(logoutDone());
-//     };
-//   };

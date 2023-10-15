@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { postSignup } from '../reducers/signup.reducer';
@@ -10,8 +10,13 @@ export default function Signup() {
   const lastNameInput = useRef();
   const emailInput = useRef();
   const passwordInput = useRef();
-
+  const loginState = useSelector((state) => state.login);
   const errorFromRedux = useSelector((state) => state.signup.error);
+  useEffect(() => {
+    if (loginState.token) {
+      navigate('/');
+    }
+  }, [loginState.token, navigate]);
   const submitForm = (e) => {
     e.preventDefault();
     if (!emailInput.current.value || !passwordInput.current.value

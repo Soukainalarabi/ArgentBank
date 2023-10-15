@@ -17,10 +17,14 @@ const loginSlice = createSlice({
     fetchDataError: (state, action) => {
       state.error = action.payload;
     },
+    logout: (state) => {
+      state.token = null; // mise à jour du state avec null
+      localStorage.removeItem('token');
+    },
   },
 });
 
-export const { fetchDataSuccess, fetchDataError } = loginSlice.actions;
+export const { fetchDataSuccess, fetchDataError, logout } = loginSlice.actions;
 
 export const postLogin = (connectedUser) => {
   return (dispatch) => axios
@@ -33,7 +37,7 @@ export const postLogin = (connectedUser) => {
         return Promise.resolve(res);
       }
       console.log("le token n'existe pas");
-      return Promise.resolve(res); // Ajoutez un retour ici
+      return Promise.resolve(res);
     })
     .catch((error) => {
       dispatch(fetchDataError(error.response.data.message));
