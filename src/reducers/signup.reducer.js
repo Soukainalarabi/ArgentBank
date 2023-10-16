@@ -26,7 +26,6 @@ const signupSlice = createSlice({
   },
 });
 export const { fetchDataSuccess, fetchDataError } = signupSlice.actions;
-
 export const postSignup = (formInfo) => {
   return (dispatch) => axios
     .post('http://localhost:3001/api/v1/user/signup', formInfo)

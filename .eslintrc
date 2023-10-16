@@ -1,13 +1,14 @@
 {
-    "extends": "airbnb",
-    "rules": {
-      "arrow-body-style": 0,
-      "no-console": "off" ,
-      "no-undef": [true, "localStorage"],
-      "jsx-a11y/label-has-associated-control": "off",
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-      "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }]
-    }
+  "extends": "airbnb",
+  "rules": {
+    "arrow-body-style": 0,
+    "no-console": "off",
+    "no-undef": ["error", {
+      "typeof": true
+    }],
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }]
   }
- 
+}
