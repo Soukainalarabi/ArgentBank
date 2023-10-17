@@ -8,9 +8,10 @@ const initialState = {
     email: '',
     password: '',
   },
+  isFormIncomplete: false,
   error: null,
 };
-const signupSlice = createSlice({
+export const signupSlice = createSlice({
   name: 'signup',
   initialState,
   reducers: {
@@ -20,12 +21,15 @@ const signupSlice = createSlice({
       state.formInfo.email = action.payload.email;
       state.formInfo.password = action.payload.password;
     },
+    isFormIncomplete: (state, action) => {
+      state.isFormIncomplete = action.payload;
+    },
     fetchDataError: (state, action) => {
       state.error = action.payload;
     },
   },
 });
-export const { fetchDataSuccess, fetchDataError } = signupSlice.actions;
+export const { fetchDataSuccess, fetchDataError, isFormIncomplete } = signupSlice.actions;
 export const postSignup = (formInfo) => {
   return (dispatch) => axios
     .post('http://localhost:3001/api/v1/user/signup', formInfo)

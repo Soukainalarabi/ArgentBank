@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { postLogin } from '../reducers/login.reducer';
+import { loginSlice, postLogin } from '../reducers/login.reducer';
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loginState = useSelector((state) => state.login);
-  const errorFromRedux = useSelector((state) => state.login.error);
-  const [login, setLogin] = useState({
-    email: '',
-    password: '',
-  });
+
   useEffect(() => {
     if (loginState.token) {
       navigate('/');
@@ -20,16 +16,15 @@ export default function Login() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setLogin((prevLogin) => ({
-      ...prevLogin,
-      [name]: value,
-    }));
+    if (loginState.loginInfo) {
+      dispatch(loginSlice.actions.loginInfo({ ...loginState.loginInfo, [name]: value }));
+    }
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
-    if (login.email && login.password) {
-      dispatch(postLogin(login))
+    if (loginState.loginInfo.email && loginState.loginInfo.password) {
+      dispatch(postLogin(loginState.loginInfo))
         .then((res) => {
           navigate('/profile');
           console.log(res);
@@ -52,7 +47,7 @@ export default function Login() {
               type="email"
               id="username"
               name="email"
-              value={login.email}
+              value={loginState.loginInfo.email}
               autoComplete="current-email"
               onChange={handleChange}
             />
@@ -63,7 +58,7 @@ export default function Login() {
               type="password"
               id="password"
               name="password"
-              value={login.password}
+              value={loginState.loginInfo.password}
               autoComplete="current-password"
               onChange={handleChange}
             />
@@ -72,7 +67,7 @@ export default function Login() {
             <input type="checkbox" id="remember-me" />
             <label>Remember me</label>
           </div>
-          {errorFromRedux && <p className="catch-message">{errorFromRedux}</p>}
+          {loginState.error && <p className="catch-message">{loginState.error}</p>}
           <button type="submit" className="sign-in-button">
             Sign In
           </button>

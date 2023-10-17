@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-import {
-  profile,
-  putProfile,
-} from '../reducers/profile.reducer';
+import { profile, putProfile, profileSlice } from '../reducers/profile.reducer';
 
 export default function Profile() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const firstNameInput = useRef();
   const lastNameInput = useRef();
   const loginState = useSelector((state) => state.login);
   const profileState = useSelector((state) => state.profile);
-  const dispatch = useDispatch();
-  const [editing, setEditing] = useState(false);
+
   useEffect(() => {
     if (!loginState.token) {
       navigate('/login');
@@ -24,11 +20,11 @@ export default function Profile() {
   }, [loginState.token, dispatch, navigate]);
 
   function handleClickEdit() {
-    setEditing(true);
+    dispatch(profileSlice.actions.editing(true));
   }
 
   function handleClickCancel() {
-    setEditing(false);
+    dispatch(profileSlice.actions.editing(false));
   }
 
   function handleClickSave() {
@@ -37,13 +33,14 @@ export default function Profile() {
       lastName: lastNameInput.current.value,
     };
     dispatch(putProfile(updatedData, loginState.token));
-    setEditing(false);
+
+    dispatch(profileSlice.actions.editing(false));
   }
 
   return (
     <>
       <nav />
-      {!editing ? (
+      {!profileState.editing ? (
         <main className="main bg-dark">
           <div className="header">
             <h1>

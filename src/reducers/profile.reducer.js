@@ -5,9 +5,10 @@ const initialState = {
   firstName: '',
   lastName: '',
   error: null,
+  editing: false,
 };
 
-const profileSlice = createSlice({
+export const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
@@ -19,10 +20,13 @@ const profileSlice = createSlice({
     fetchDataError: (state, action) => {
       state.error = action.payload;
     },
+    editing: (state, action) => {
+      state.editing = action.payload;
+    },
   },
 });
 
-export const { fetchDataSuccess, fetchDataError } = profileSlice.actions;
+export const { fetchDataSuccess, fetchDataError, editing } = profileSlice.actions;
 
 export const profile = (token) => {
   return (dispatch) => {

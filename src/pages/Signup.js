@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { postSignup } from '../reducers/signup.reducer';
+import { postSignup, signupSlice } from '../reducers/signup.reducer';
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -11,8 +11,9 @@ export default function Signup() {
   const emailInput = useRef();
   const passwordInput = useRef();
   const loginState = useSelector((state) => state.login);
+  const signupState = useSelector((state) => state.signup);
   const errorFromRedux = useSelector((state) => state.signup.error);
-  const [isFormIncomplete, setIsFormIncomplete] = useState(false);
+
   useEffect(() => {
     if (loginState.token) {
       navigate('/');
@@ -31,18 +32,19 @@ export default function Signup() {
       password: passwordValue,
     };
     if (!firstNameValue || !lastNameValue || !emailValue || !passwordValue) {
-      setIsFormIncomplete(true);
-      return;
+      dispatch(signupSlice.actions.isFormIncomplete(false));
+      console.log(dispatch(signupSlice.actions.isFormIncomplete(true)));
+    } else {
+      dispatch(signupSlice.actions.isFormIncomplete(false));
+      dispatch(postSignup(formInfo))
+        .then((res) => {
+          navigate('/login');
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-    setIsFormIncomplete(false);
-    dispatch(postSignup(formInfo))
-      .then((res) => {
-        navigate('/login');
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
   return (
     <main className="main bg-dark">
@@ -66,10 +68,12 @@ export default function Signup() {
             <label htmlFor="password">Password</label>
             <input ref={passwordInput} type="password" id="password" name="password" autoComplete="current-password" />
           </div>
-          {isFormIncomplete && (
-            <p className="catch-message">Veuillez remplir le formulaire</p>
+          {signupState.isFormIncomplete && (
+          <p className="catch-message">Veuillez remplir le formulaire</p>
           )}
-          {errorFromRedux && <p className="catch-message">{errorFromRedux}</p>}
+          {!signupState.isFormIncomplete && errorFromRedux && (
+          <p className="catch-message">{errorFromRedux}</p>
+          )}
           <button type="submit" className="sign-in-button">Sign Up</button>
         </form>
       </section>

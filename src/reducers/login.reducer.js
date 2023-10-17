@@ -4,9 +4,13 @@ import axios from 'axios';
 const initialState = {
   token: localStorage.getItem('token') || null,
   error: null,
+  loginInfo: {
+    email: '',
+    password: '',
+  },
 };
 
-const loginSlice = createSlice({
+export const loginSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
@@ -17,6 +21,10 @@ const loginSlice = createSlice({
     fetchDataError: (state, action) => {
       state.error = action.payload;
     },
+    loginInfo: (state, action) => {
+      state.loginInfo.email = action.payload.email;
+      state.loginInfo.password = action.payload.password;
+    },
     logout: (state) => {
       state.token = null; // mise à jour du state avec null
       localStorage.removeItem('token');
@@ -24,7 +32,9 @@ const loginSlice = createSlice({
   },
 });
 
-export const { fetchDataSuccess, fetchDataError, logout } = loginSlice.actions;
+export const {
+  fetchDataSuccess, fetchDataError, loginInfo, logout,
+} = loginSlice.actions;
 
 export const postLogin = (connectedUser) => {
   return (dispatch) => axios
